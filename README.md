@@ -1,4 +1,6 @@
 # YOLOv8 物件偵測專案
+本專案展示了如何使用 Ultralytics YOLOv8 進行物件偵測，包含 GPU 環境檢查、模型配置查看、即時攝影機捕捉及靜態影像推論等功能。適合初學者學習 YOLOv8 的基本應用。
+測試環境: Windows 11 25H2, Python 3.10.19, pytorch2.9.1 CUDA 13.0
 
 本專案用於測試與演示 YOLOv8 物件偵測模型的基本功能，包括 GPU 環境驗證、模型配置檢查、即時攝影機捕捉及靜態影像推論。
 
@@ -105,7 +107,4 @@ A：首次執行時 Ultralytics 會自動下載 `yolov8m.pt`，可預先至 Hugg
 **Q：推論速度慢？**  
 A：檢查 `01-gpu_cuda_test.py` 確認 GPU 是否正常使用，或嘗試 YOLOv8n（Nano）以提升速度
 
-## 授權
-
-本專案用於教育與測試用途。
 
