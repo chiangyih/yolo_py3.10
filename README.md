@@ -58,6 +58,22 @@ python 04-picture_test.py
 
 **操作**：按 ESC 鍵退出；視窗可自由調整大小
 
+### 5. `05-video_test.py`
+**用途**：串流或檔案影片偵測  
+**功能**：
+- 從 RTSP/HTTP 串流、USB 攝影機或 MP4 讀取畫面
+- 即時顯示 YOLOv8m 推論結果與 FPS 數值
+- 可於 `target` 變數切換來源（含校園攝影機範例）
+
+**執行方式**：
+```bash
+python 05-video_test.py
+```
+
+**操作**：
+- 修改 `target` 變數以指定 URL、檔案或攝影機索引
+- 執行期間按 ESC 鍵即可結束並釋放資源
+
 ## 環境需求
 
 - Python 3.8+
