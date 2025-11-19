@@ -9,9 +9,10 @@ cv2.namedWindow('YOLOv8', cv2.WINDOW_NORMAL) #cv2.WINDOW_NORMAL可以讓視窗�
 # target=1
 #target='city.mp4'
 # target='https://trafficvideo.tainan.gov.tw/e2e14cfa'
-# target='rtsp://admin:hk888888@172.16.103.192:554' #圖書館PTZ攝影機
-target='rtsp://admin:hk888888@172.16.103.61:554/chID=2&streamtype=main&linkType=tcp' #教學大樓攝影機
-
+# target='rtsp://admin:hk888888@172.16.103.192:554' #圖書館1F PTZ攝影機
+target='rtsp://172.16.103.61:554/chID=2&streamtype=main&linkType=tcp' #行政大樓1F攝影機,chID=2代表第二台攝影機
+# 學校DVR URL範例 rtsp://IP:Port/chID=1&streamType=main
+# target='rtsp://172.16.103.62:554/chID=4&streamtype=main&linkType=tcp' #實習大樓攝影機,chID=2代表第二台攝影機
 model = YOLO('yolov8m.pt')  # n,s,m,l,x 五種大小
 
 names=model.names #辨識類別, 80種 
