@@ -68,11 +68,11 @@ python 07-person_count.py
 
 ## 環境需求
 
-- Python 3.8+
-- PyTorch
-- OpenCV（`opencv-python`）
-- Ultralytics YOLOv8（`ultralytics`）
-- NVIDIA GPU（建議但非必需）
+- Windows 11 25H2（26200.7462）
+- Python 3.10.19
+- PyTorch 2.9.1+cu130（CUDA 13.0 / cuDNN 91200）
+- OpenCV 4.12.0（`opencv-python`）
+- Ultralytics YOLOv8 8.3.228（`ultralytics`）
 
 ## 模型與測試素材
 
