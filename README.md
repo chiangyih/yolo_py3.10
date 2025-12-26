@@ -1,9 +1,9 @@
 # YOLOv8 專案
----
+
 Author: [Tseng chiang yih]
 ---
 
-本專案展示如何使用 Ultralytics YOLOv8 進行物件偵測，包含 GPU 環境檢查、YOLO 設定查看、USB 攝影機即時畫面顯示，以及靜態影像推論。
+使用 Ultralytics YOLOv8 進行物件偵測，包含 GPU 環境檢查、YOLO 設定查看、USB 攝影機即時畫面顯示，以及靜態影像推論。
 
 測試環境：Windows 11 25H2、Python 3.10.19、PyTorch 2.9.1 + CUDA 13.0
 
