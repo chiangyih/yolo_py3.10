@@ -1,114 +1,89 @@
 # YOLOv8 專案
 
-Author: [Tseng chiang yih]
----
+作者：Tseng chiang yih
 
-使用 Ultralytics YOLOv8 進行物件偵測，包含 GPU 環境檢查、YOLO 設定查看、USB 攝影機即時畫面顯示，以及靜態影像推論。
+使用 Ultralytics YOLOv8 進行物件偵測，包含 GPU 環境檢查、YOLO 設定查看、USB 攝影機即時畫面顯示、靜態影像推論與人類（person）偵測示範。
 
 測試環境：Windows 11 25H2、Python 3.10.19、PyTorch 2.9.1 + CUDA 13.0
 
-## 專案檔案說明
+## 內容導覽
 
-### 1. `01-gpu_cuda_test.py`
-**用途**：驗證 GPU 與 CUDA 環境  
-**功能**：
-- 檢查 PyTorch 版本
-- 確認 GPU 是否可用
-- 顯示 GPU 數量、CUDA 記憶體狀態及 cuDNN 版本
+- 快速開始
+- 專案腳本一覽
+- 環境需求
+- 模型與測試素材
+- YOLOv8 模型名稱（Detection / Segmentation / Pose / Classification）
+- YOLO 可偵測類別清單（COCO 80 類）
+- 常見問題
 
-**執行方式**：
+## 快速開始
+
 ```pwsh
 python 01-gpu_cuda_test.py
-```
-
-### 2. `02-檢查當前yolo配置.py`
-**用途**：查看 YOLOv8 配置  
-**功能**：
-- 列出所有 YOLOv8 設定項目
-- 讀取特定設定值（如 `runs_dir` 模型輸出目錄；目前程式只取值未額外列印）
-
-**執行方式**：
-```pwsh
-python 02-檢查當前yolo配置.py
-```
-
-### 3. `03-usb_webcam_test.py`
-**用途**：即時攝影機畫面擷取與顯示  
-**功能**：
-- 開啟 USB 攝影機（預設編號 0）並即時顯示畫面（連續更新）
-- 可調整大小視窗（`cv2.WINDOW_NORMAL`）
-- 退出時釋放攝影機資源並關閉視窗
-
-**執行方式**：
-```pwsh
-python 03-usb_webcam_test.py
-```
-
-**操作**：按 `ESC` 或 `q` 退出（視窗需取得焦點）
-
-### 4. `04-picture_test.py`
-**用途**：靜態影像物件偵測  
-**功能**：
-- 讀取本地影像檔案（預設 `bus.jpg`）
-- 使用 YOLOv8m 模型進行物件偵測
-- 在左上角顯示使用的模型版本文字（目前為 `YOLOv8m`）
-- 顯示標註後的影像，並停留等待 `ESC` 退出
-- 視窗可自由調整大小（`cv2.WINDOW_NORMAL`）
-
-**執行方式**：
-```pwsh
 python 04-picture_test.py
-```
-
-**操作**：按 `ESC` 鍵退出
-
-### 5. `05-human_detect.py`
-**用途**：使用 USB 攝影機進行人類（person）即時偵測與框選  
-**功能**：
-- 使用 `yolov8m.pt` 進行即時串流推論
-- 僅偵測 COCO 類別中的 person（人類），並在畫面上框選
-- 可調整大小視窗（`cv2.WINDOW_NORMAL`）
-- 顯示模型名稱與 FPS
-
-**執行方式**：
-```pwsh
+python 03-usb_webcam_test.py
 python 05-human_detect.py
 ```
 
-**操作**：按 `ESC` 鍵退出
+## 專案腳本一覽
 
-### 5. `05-video_test.py`
-**用途**：串流或檔案影片偵測  
-**功能**：
-- 從 RTSP/HTTP 串流、USB 攝影機或 MP4 讀取畫面
-- 即時顯示 YOLOv8m 推論結果與 FPS 數值
-- 可於 `target` 變數切換來源（含校園攝影機範例）
+| 檔案 | 用途 | 來源 | 操作 |
+|---|---|---|---|
+| `01-gpu_cuda_test.py` | 驗證 GPU/CUDA | 無 | 直接執行 | 
+| `02-檢查當前yolo配置.py` | 查看 Ultralytics 設定 | 無 | 直接執行 | 
+| `03-usb_webcam_test.py` | USB 攝影機即時顯示 | USB webcam | `ESC` 或 `q` 退出（視窗需取得焦點） |
+| `04-picture_test.py` | 靜態影像偵測 | `bus.jpg` | `ESC` 退出 |
+| `05-human_detect.py` | 人類（person）即時偵測 | USB webcam | `ESC` 退出 |
+| `05-video_test.py` | 串流/影片偵測展示 | RTSP/HTTP/MP4 | `ESC` 退出（需自行修改 `target`） |
 
-**執行方式**：
-```bash
-python 05-video_test.py
-```
+<details>
+<summary>展開：各腳本詳細說明</summary>
 
-**操作**：
-- 修改 `target` 變數以指定 URL、檔案或攝影機索引
-- 執行期間按 ESC 鍵即可結束並釋放資源
+### `01-gpu_cuda_test.py`
+- 檢查 PyTorch 版本、CUDA 是否可用、GPU 數量、cuDNN 狀態與顯示卡記憶體狀態。
+
+### `02-檢查當前yolo配置.py`
+- 列印 Ultralytics `settings`，並讀取 `runs_dir`（目前程式只取值未額外列印）。
+
+### `03-usb_webcam_test.py`
+- 開啟 USB 攝影機（預設編號 0）並即時顯示。
+- 視窗可調整大小（`cv2.WINDOW_NORMAL`）。
+
+### `04-picture_test.py`
+- 讀取 `bus.jpg` 後進行偵測，左上角顯示 `YOLOv8m`，按 `ESC` 關閉視窗。
+
+### `05-human_detect.py`
+- 使用 `yolov8m.pt` 對 USB 攝影機即時推論，只偵測 person 並框選，影像大小固定 640×480。
+
+### `05-video_test.py`
+- 從 RTSP/HTTP/MP4 讀取畫面並進行偵測，畫面顯示 FPS。
+- 請先修改 `target` 來源再執行；目前程式結束時未顯式 `release/destroyAllWindows`。
+
+</details>
 
 ## 環境需求
 
 - Python 3.8+
 - PyTorch
-- OpenCV (`opencv-python`)
-- Ultralytics YOLOv8 (`ultralytics`)
-- 裝有 NVIDIA GPU（建議但非必需）
+- OpenCV（`opencv-python`）
+- Ultralytics YOLOv8（`ultralytics`）
+- NVIDIA GPU（建議但非必需）
 
-## 模型檔案
+## 模型與測試素材
 
-- `yolov8m.pt`：YOLOv8 中等模型（Medium），約 49MB
-- `bus.jpg`：用於測試的示範影像
+- `yolov8m.pt`：YOLOv8 中等模型（Medium）
+- `bus.jpg`：示範影像
 
-## YOLOv8 模型名稱（偵測 Detection）
+## YOLOv8 模型名稱
 
-YOLOv8 針對偵測任務常見的 5 種模型大小如下（由小到大）：
+以下列出 YOLOv8 常見的模型大小（n/s/m/l/x）與權重檔名。不同任務會有不同後綴：
+- 偵測：無後綴（例如 `yolov8m.pt`）
+- 分割：`-seg`
+- 姿態：`-pose`
+- 分類：`-cls`
+
+<details>
+<summary>展開：偵測 Detection（無後綴）</summary>
 
 | 模型代號 | 權重檔名 | 說明 |
 |---|---|---|
@@ -118,39 +93,53 @@ YOLOv8 針對偵測任務常見的 5 種模型大小如下（由小到大）：
 | YOLOv8l | `yolov8l.pt` | Large：精度較高、速度較慢 |
 | YOLOv8x | `yolov8x.pt` | XLarge：精度最高、速度最慢 |
 
-## YOLOv8 模型名稱（分割 Segmentation：`-seg`）
+</details>
 
-| 模型代號 | 權重檔名 | 說明 |
-|---|---|---|
-| YOLOv8n-seg | `yolov8n-seg.pt` | Nano：速度最快、精度較低 |
-| YOLOv8s-seg | `yolov8s-seg.pt` | Small：速度/精度平衡（偏快） |
-| YOLOv8m-seg | `yolov8m-seg.pt` | Medium：速度/精度平衡 |
-| YOLOv8l-seg | `yolov8l-seg.pt` | Large：精度較高、速度較慢 |
-| YOLOv8x-seg | `yolov8x-seg.pt` | XLarge：精度最高、速度最慢 |
+<details>
+<summary>展開：分割 Segmentation（`-seg`）</summary>
 
-## YOLOv8 模型名稱（姿態 Pose：`-pose`）
+| 模型代號 | 權重檔名 |
+|---|---|
+| YOLOv8n-seg | `yolov8n-seg.pt` |
+| YOLOv8s-seg | `yolov8s-seg.pt` |
+| YOLOv8m-seg | `yolov8m-seg.pt` |
+| YOLOv8l-seg | `yolov8l-seg.pt` |
+| YOLOv8x-seg | `yolov8x-seg.pt` |
 
-| 模型代號 | 權重檔名 | 說明 |
-|---|---|---|
-| YOLOv8n-pose | `yolov8n-pose.pt` | Nano：速度最快、精度較低 |
-| YOLOv8s-pose | `yolov8s-pose.pt` | Small：速度/精度平衡（偏快） |
-| YOLOv8m-pose | `yolov8m-pose.pt` | Medium：速度/精度平衡 |
-| YOLOv8l-pose | `yolov8l-pose.pt` | Large：精度較高、速度較慢 |
-| YOLOv8x-pose | `yolov8x-pose.pt` | XLarge：精度最高、速度最慢 |
+</details>
 
-## YOLOv8 模型名稱（分類 Classification：`-cls`）
+<details>
+<summary>展開：姿態 Pose（`-pose`）</summary>
 
-| 模型代號 | 權重檔名 | 說明 |
-|---|---|---|
-| YOLOv8n-cls | `yolov8n-cls.pt` | Nano：速度最快、精度較低 |
-| YOLOv8s-cls | `yolov8s-cls.pt` | Small：速度/精度平衡（偏快） |
-| YOLOv8m-cls | `yolov8m-cls.pt` | Medium：速度/精度平衡 |
-| YOLOv8l-cls | `yolov8l-cls.pt` | Large：精度較高、速度較慢 |
-| YOLOv8x-cls | `yolov8x-cls.pt` | XLarge：精度最高、速度最慢 |
+| 模型代號 | 權重檔名 |
+|---|---|
+| YOLOv8n-pose | `yolov8n-pose.pt` |
+| YOLOv8s-pose | `yolov8s-pose.pt` |
+| YOLOv8m-pose | `yolov8m-pose.pt` |
+| YOLOv8l-pose | `yolov8l-pose.pt` |
+| YOLOv8x-pose | `yolov8x-pose.pt` |
+
+</details>
+
+<details>
+<summary>展開：分類 Classification（`-cls`）</summary>
+
+| 模型代號 | 權重檔名 |
+|---|---|
+| YOLOv8n-cls | `yolov8n-cls.pt` |
+| YOLOv8s-cls | `yolov8s-cls.pt` |
+| YOLOv8m-cls | `yolov8m-cls.pt` |
+| YOLOv8l-cls | `yolov8l-cls.pt` |
+| YOLOv8x-cls | `yolov8x-cls.pt` |
+
+</details>
 
 ## YOLO 可偵測類別清單（COCO 80 類）
 
-本專案使用的 `yolov8*.pt` 預設是以 COCO 資料集訓練，常見的可偵測類別如下（共 80 類）：
+本專案使用的 `yolov8*.pt` 預設是以 COCO 資料集訓練（共 80 類）。
+
+<details>
+<summary>展開：COCO 80 類別（英文＋中文）</summary>
 
 | # | 類別（英文＋中文） |
 |---:|---|
@@ -235,40 +224,17 @@ YOLOv8 針對偵測任務常見的 5 種模型大小如下（由小到大）：
 | 79 | hair drier（吹風機） |
 | 80 | toothbrush（牙刷） |
 
-## 快速開始
-
-1. 確認 GPU 環境（可選）：
-   ```pwsh
-   python 01-gpu_cuda_test.py
-   ```
-
-2. 測試本地影像推論：
-   ```pwsh
-   python 04-picture_test.py
-   ```
-
-3. 測試實時攝影機：
-   ```pwsh
-   python 03-usb_webcam_test.py
-   ```
-
-## 專案特點
-
-- ✅ 簡化的程式碼結構，易於理解與修改
-- ✅ 完整的錯誤處理與資源清理
-- ✅ 支援鍵盤中斷（Ctrl+C）
-- ✅ 可調整大小的視窗界面
-- ✅ 中文註解，適合學習
+</details>
 
 ## 常見問題
 
 **Q：無法開啟攝影機怎麼辦？**  
-A：檢查 USB 攝影機連線，或嘗試變更 `cv2.VideoCapture()` 的編號參數（0, 1, 2...）
+A：檢查 USB 攝影機連線，或嘗試變更 `cv2.VideoCapture()` 的編號參數（0, 1, 2...）。
 
 **Q：模型下載緩慢？**  
-A：首次執行時 Ultralytics 會自動下載 `yolov8m.pt`，可預先至 Hugging Face 下載或指定本地路徑
+A：首次執行時 Ultralytics 可能會下載權重，可先準備好對應 `.pt` 檔並放在專案目錄。
 
 **Q：推論速度慢？**  
-A：檢查 `01-gpu_cuda_test.py` 確認 GPU 是否正常使用，或嘗試 YOLOv8n（Nano）以提升速度
+A：可先用 `01-gpu_cuda_test.py` 確認 GPU 是否可用，或改用 YOLOv8n（Nano）提升速度。
 
 
