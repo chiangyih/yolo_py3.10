@@ -22,7 +22,8 @@
 python 01-gpu_cuda_test.py
 python 04-picture_test.py
 python 03-usb_webcam_test.py
-python 05-human_detect.py
+python 06-human_detect.py
+python 07-person_count.py
 ```
 
 ## 專案腳本一覽
@@ -33,7 +34,8 @@ python 05-human_detect.py
 | `02-檢查當前yolo配置.py` | 查看 Ultralytics 設定 | 無 | 直接執行 | 
 | `03-usb_webcam_test.py` | USB 攝影機即時顯示 | USB webcam | `ESC` 或 `q` 退出（視窗需取得焦點） |
 | `04-picture_test.py` | 靜態影像偵測 | `bus.jpg` | `ESC` 退出 |
-| `05-human_detect.py` | 人類（person）即時偵測 | USB webcam | `ESC` 退出 |
+| `06-human_detect.py` | 人類（person）即時偵測 | USB webcam | `ESC` 退出 |
+| `07-person_count.py` | 人數計算（person 計數）即時偵測 | USB webcam | `ESC` 退出 |
 | `05-video_test.py` | 串流/影片偵測展示 | RTSP/HTTP/MP4 | `ESC` 退出（需自行修改 `target`） |
 
 <details>
@@ -52,8 +54,11 @@ python 05-human_detect.py
 ### `04-picture_test.py`
 - 讀取 `bus.jpg` 後進行偵測，左上角顯示 `YOLOv8m`，按 `ESC` 關閉視窗。
 
-### `05-human_detect.py`
+### `06-human_detect.py`
 - 使用 `yolov8m.pt` 對 USB 攝影機即時推論，只偵測 person 並框選，影像大小固定 640×480。
+
+### `07-person_count.py`
+- 基於 `06-human_detect.py`，額外計算畫面中的 person 數量，並在視窗右上角以粗體顯示。
 
 ### `05-video_test.py`
 - 從 RTSP/HTTP/MP4 讀取畫面並進行偵測，畫面顯示 FPS。

@@ -9,7 +9,7 @@ MODEL_PATH = "yolov8m.pt"  # 指定要使用的 YOLOv8m 模型檔
 CAMERA_INDEX = 0  # USB 攝影機編號（0 通常是第一支）
 FRAME_WIDTH = 640  # 偵測/顯示用影像寬度
 FRAME_HEIGHT = 480  # 偵測/顯示用影像高度
-WINDOW_NAME = "YOLOv8m - person"  # 視窗標題文字
+WINDOW_NAME = "YOLOv8m - person count"  # 視窗標題文字
 PERSON_CLASS_ID = 0  # COCO person（人類）的類別 id
 
 
@@ -27,7 +27,21 @@ def ensure_frame_size(frame, width: int, height: int):  # 確保影像大小一�
 	return cv2.resize(frame, (width, height), interpolation=cv2.INTER_LINEAR)  # 不符合就 resize 成指定大小
 
 
-def overlay_status(frame, model_path: str, fps: float) -> None:  # 在影像上疊加狀態文字
+def draw_bold_text_right_top(frame, text: str, margin: int = 10) -> None:  # 以「粗體」在右上角繪製文字
+	font = cv2.FONT_HERSHEY_SIMPLEX  # 設定字型
+	font_scale = 0.9  # 設定字體大小
+	thickness = 3  # 設定線條粗細（較粗即更像粗體）
+	color = (0, 255, 0)  # 設定字體顏色（綠色）
+
+	(text_w, text_h), baseline = cv2.getTextSize(text, font, font_scale, thickness)  # 計算文字寬高
+	x = max(margin, frame.shape[1] - margin - text_w)  # 讓文字靠右對齊並保留邊界
+	y = margin + text_h  # 讓文字靠上並保留邊界
+
+	cv2.putText(frame, text, (x, y), font, font_scale, color, thickness, cv2.LINE_AA)  # 先畫一次
+	cv2.putText(frame, text, (x + 1, y), font, font_scale, color, thickness, cv2.LINE_AA)  # 再偏移 1px 畫一次，增加粗體感
+
+
+def overlay_status(frame, model_path: str, fps: float, person_count: int) -> None:  # 在影像上疊加狀態文字
 	cv2.putText(  # 在畫面左上角疊加文字資訊
 		frame,  # 要畫字的影像
 		f"Model: {model_path} | FPS: {fps:.1f}",  # 顯示模型名稱與 FPS
@@ -39,12 +53,21 @@ def overlay_status(frame, model_path: str, fps: float) -> None:  # 在影像上�
 		cv2.LINE_AA,  # 反鋸齒
 	)  # 結束 putText 呼叫
 
+	draw_bold_text_right_top(frame, f"Count: {person_count}")  # 在右上角以粗體顯示人數
+
 
 def window_closed(window_name: str) -> bool:  # 檢查視窗是否被使用者關閉
 	try:  # 某些環境可能對 getWindowProperty 支援不完整
 		return cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) < 1  # 視窗不可見代表已關閉
 	except cv2.error:  # OpenCV 例外（保守處理為未關閉）
 		return False  # 回傳未關閉
+
+
+def count_persons(result0) -> int:  # 從單張推論結果計算人數（person 框數）
+	boxes = getattr(result0, "boxes", None)  # 取得 boxes（可能不存在或為 None）
+	if boxes is None:  # 若沒有 boxes
+		return 0  # 視為 0 人
+	return len(boxes)  # 以框的數量作為人數
 
 
 def main() -> int:  # 主流程：回傳 0 代表正常結束，非 0 代表失敗
@@ -75,13 +98,14 @@ def main() -> int:  # 主流程：回傳 0 代表正常結束，非 0 代表失�
 
 			results = model(frame, classes=[PERSON_CLASS_ID], verbose=False)  # 只偵測 person 類別並回傳結果
 			annotated = results[0].plot()  # 將框與標籤畫在影像上
+			person_count = count_persons(results[0])  # 計算畫面中 person 數量
 
 			now = time.perf_counter()  # 取得目前時間點
 			dt = now - last_time  # 計算與上一幀的時間差
 			fps = (1.0 / dt) if dt > 0 else fps  # 以時間差估算即時 FPS（避免除以 0）
 			last_time = now  # 更新上一幀時間
 
-			overlay_status(annotated, MODEL_PATH, fps)  # 疊加模型與 FPS 資訊
+			overlay_status(annotated, MODEL_PATH, fps, person_count)  # 疊加模型、FPS 與人數資訊
 			cv2.imshow(WINDOW_NAME, annotated)  # 顯示即時串流畫面
 
 			if window_closed(WINDOW_NAME):  # 若使用者按了視窗右上角 X
@@ -100,3 +124,4 @@ def main() -> int:  # 主流程：回傳 0 代表正常結束，非 0 代表失�
 
 if __name__ == "__main__":  # 直接執行此檔案時才會進入
 	sys.exit(main())  # 以明確的 exit code 結束程式
+
