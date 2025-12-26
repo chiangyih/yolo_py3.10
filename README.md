@@ -34,9 +34,9 @@ python 07-person_count.py
 | `02-檢查當前yolo配置.py` | 查看 Ultralytics 設定 | 無 | 直接執行 | 
 | `03-usb_webcam_test.py` | USB 攝影機即時顯示 | USB webcam | `ESC` 或 `q` 退出（視窗需取得焦點） |
 | `04-picture_test.py` | 靜態影像偵測 | `bus.jpg` | `ESC` 退出 |
+| `05-video_test.py` | 串流/影片偵測展示 | RTSP/HTTP/MP4 | `ESC` 退出（需自行修改 `target`） |
 | `06-human_detect.py` | 人類（person）即時偵測 | USB webcam | `ESC` 退出 |
 | `07-person_count.py` | 人數計算（person 計數）即時偵測 | USB webcam | `ESC` 退出 |
-| `05-video_test.py` | 串流/影片偵測展示 | RTSP/HTTP/MP4 | `ESC` 退出（需自行修改 `target`） |
 
 <details>
 <summary>展開：各腳本詳細說明</summary>
