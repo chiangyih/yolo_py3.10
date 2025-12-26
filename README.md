@@ -103,6 +103,48 @@ python 05-video_test.py
 - `yolov8m.pt`：YOLOv8 中等模型（Medium），約 49MB
 - `bus.jpg`：用於測試的示範影像
 
+## YOLOv8 模型名稱（偵測 Detection）
+
+YOLOv8 針對偵測任務常見的 5 種模型大小如下（由小到大）：
+
+| 模型代號 | 權重檔名 | 說明 |
+|---|---|---|
+| YOLOv8n | `yolov8n.pt` | Nano：速度最快、精度較低 |
+| YOLOv8s | `yolov8s.pt` | Small：速度/精度平衡（偏快） |
+| YOLOv8m | `yolov8m.pt` | Medium：速度/精度平衡 |
+| YOLOv8l | `yolov8l.pt` | Large：精度較高、速度較慢 |
+| YOLOv8x | `yolov8x.pt` | XLarge：精度最高、速度最慢 |
+
+## YOLOv8 模型名稱（分割 Segmentation：`-seg`）
+
+| 模型代號 | 權重檔名 | 說明 |
+|---|---|---|
+| YOLOv8n-seg | `yolov8n-seg.pt` | Nano：速度最快、精度較低 |
+| YOLOv8s-seg | `yolov8s-seg.pt` | Small：速度/精度平衡（偏快） |
+| YOLOv8m-seg | `yolov8m-seg.pt` | Medium：速度/精度平衡 |
+| YOLOv8l-seg | `yolov8l-seg.pt` | Large：精度較高、速度較慢 |
+| YOLOv8x-seg | `yolov8x-seg.pt` | XLarge：精度最高、速度最慢 |
+
+## YOLOv8 模型名稱（姿態 Pose：`-pose`）
+
+| 模型代號 | 權重檔名 | 說明 |
+|---|---|---|
+| YOLOv8n-pose | `yolov8n-pose.pt` | Nano：速度最快、精度較低 |
+| YOLOv8s-pose | `yolov8s-pose.pt` | Small：速度/精度平衡（偏快） |
+| YOLOv8m-pose | `yolov8m-pose.pt` | Medium：速度/精度平衡 |
+| YOLOv8l-pose | `yolov8l-pose.pt` | Large：精度較高、速度較慢 |
+| YOLOv8x-pose | `yolov8x-pose.pt` | XLarge：精度最高、速度最慢 |
+
+## YOLOv8 模型名稱（分類 Classification：`-cls`）
+
+| 模型代號 | 權重檔名 | 說明 |
+|---|---|---|
+| YOLOv8n-cls | `yolov8n-cls.pt` | Nano：速度最快、精度較低 |
+| YOLOv8s-cls | `yolov8s-cls.pt` | Small：速度/精度平衡（偏快） |
+| YOLOv8m-cls | `yolov8m-cls.pt` | Medium：速度/精度平衡 |
+| YOLOv8l-cls | `yolov8l-cls.pt` | Large：精度較高、速度較慢 |
+| YOLOv8x-cls | `yolov8x-cls.pt` | XLarge：精度最高、速度最慢 |
+
 ## YOLO 可偵測類別清單（COCO 80 類）
 
 本專案使用的 `yolov8*.pt` 預設是以 COCO 資料集訓練，常見的可偵測類別如下（共 80 類）：
